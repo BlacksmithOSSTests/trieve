@@ -86,6 +86,9 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+
   file_worker:
     name: Push File Worker image
     runs-on: blacksmith-staging-8vcpu-ubuntu-2204
