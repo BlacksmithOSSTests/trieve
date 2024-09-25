@@ -20,12 +20,12 @@ jobs:
     runs-on: ${{ matrix.runner }}
     strategy:
       matrix:
-        runner: [blacksmith-8vcpu-ubuntu-2204]
+        runner: [blacksmith-staging-4vcpu-ubuntu-2204]
         platform: [linux/amd64]
         exclude:
-          - runner: blacksmith-8vcpu-ubuntu-2204
+          - runner: blacksmith-staging-4vcpu-ubuntu-2204
             platform: linux/arm64
-          - runner: blacksmith-8vcpu-ubuntu-2204-arm
+          - runner: blacksmith-staging-4vcpu-ubuntu-2204-arm
             platform: linux/amd64
     steps:
       - name: Checkout the repo
@@ -60,18 +60,19 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          nofallback: true
 
   ingest_worker:
     name: Push Ingest image
     runs-on: ${{ matrix.runner }}
     strategy:
       matrix:
-        runner: [blacksmith-8vcpu-ubuntu-2204]
+        runner: [blacksmith-staging-4vcpu-ubuntu-2204]
         platform: [linux/amd64]
         exclude:
-          - runner: blacksmith-8vcpu-ubuntu-2204
+          - runner: blacksmith-staging-4vcpu-ubuntu-2204
             platform: linux/arm64
-          - runner: blacksmith-8vcpu-ubuntu-2204-arm
+          - runner: blacksmith-staging-4vcpu-ubuntu-2204-arm
             platform: linux/amd64
     steps:
       - name: Checkout the repo
@@ -103,18 +104,19 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          nofallback: true
 
   delete_worker:
     name: Push Delete worker
     runs-on: ${{ matrix.runner }}
     strategy:
       matrix:
-        runner: [blacksmith-8vcpu-ubuntu-2204]
+        runner: [blacksmith-staging-4vcpu-ubuntu-2204]
         platform: [linux/amd64]
         exclude:
-          - runner: blacksmith-8vcpu-ubuntu-2204
+          - runner: blacksmith-staging-4vcpu-ubuntu-2204
             platform: linux/arm64
-          - runner: blacksmith-8vcpu-ubuntu-2204-arm
+          - runner: blacksmith-staging-4vcpu-ubuntu-2204-arm
             platform: linux/amd64
     steps:
       - name: Checkout the repo
@@ -146,18 +148,19 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          nofallback: true
 
   file_worker:
     name: Push File Worker image
     runs-on: ${{ matrix.runner }}
     strategy:
       matrix:
-        runner: [blacksmith-8vcpu-ubuntu-2204]
+        runner: [blacksmith-staging-4vcpu-ubuntu-2204]
         platform: [linux/amd64]
         exclude:
-          - runner: blacksmith-8vcpu-ubuntu-2204
+          - runner: blacksmith-staging-4vcpu-ubuntu-2204
             platform: linux/arm64
-          - runner: blacksmith-8vcpu-ubuntu-2204-arm
+          - runner: blacksmith-staging-4vcpu-ubuntu-2204-arm
             platform: linux/amd64
     steps:
       - name: Checkout the repo
@@ -189,18 +192,19 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          nofallback: true
 
   group_worker:
     name: Push Group worker
     runs-on: ${{ matrix.runner }}
     strategy:
       matrix:
-        runner: [blacksmith-8vcpu-ubuntu-2204]
+        runner: [blacksmith-staging-4vcpu-ubuntu-2204]
         platform: [linux/amd64]
         exclude:
-          - runner: blacksmith-8vcpu-ubuntu-2204
+          - runner: blacksmith-staging-4vcpu-ubuntu-2204
             platform: linux/arm64
-          - runner: blacksmith-8vcpu-ubuntu-2204-arm
+          - runner: blacksmith-staging-4vcpu-ubuntu-2204-arm
             platform: linux/amd64
     steps:
       - name: Checkout the repo
@@ -232,18 +236,19 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          nofallback: true
 
   sync_qdrant:
     name: Push Sync Qdrant script
     runs-on: ${{ matrix.runner }}
     strategy:
       matrix:
-        runner: [blacksmith-8vcpu-ubuntu-2204]
+        runner: [blacksmith-staging-4vcpu-ubuntu-2204]
         platform: [linux/amd64]
         exclude:
-          - runner: blacksmith-8vcpu-ubuntu-2204
+          - runner: blacksmith-staging-4vcpu-ubuntu-2204
             platform: linux/arm64
-          - runner: blacksmith-8vcpu-ubuntu-2204-arm
+          - runner: blacksmith-staging-4vcpu-ubuntu-2204-arm
             platform: linux/amd64
     steps:
       - name: Checkout the repo
@@ -275,18 +280,19 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          nofallback: true
 
   queue_bm25:
     name: Push Queue BM25 Script
     runs-on: ${{ matrix.runner }}
     strategy:
       matrix:
-        runner: [blacksmith-8vcpu-ubuntu-2204]
+        runner: [blacksmith-staging-4vcpu-ubuntu-2204]
         platform: [linux/amd64]
         exclude:
-          - runner: blacksmith-8vcpu-ubuntu-2204
+          - runner: blacksmith-staging-4vcpu-ubuntu-2204
             platform: linux/arm64
-          - runner: blacksmith-8vcpu-ubuntu-2204-arm
+          - runner: blacksmith-staging-4vcpu-ubuntu-2204-arm
             platform: linux/amd64
     steps:
       - name: Checkout the repo
@@ -318,18 +324,19 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          nofallback: true
 
   reindex-worker:
     name: Push Reindex Worker
     runs-on: ${{ matrix.runner }}
     strategy:
       matrix:
-        runner: [blacksmith-8vcpu-ubuntu-2204]
+        runner: [blacksmith-staging-4vcpu-ubuntu-2204]
         platform: [linux/amd64]
         exclude:
-          - runner: blacksmith-8vcpu-ubuntu-2204
+          - runner: blacksmith-staging-4vcpu-ubuntu-2204
             platform: linux/arm64
-          - runner: blacksmith-8vcpu-ubuntu-2204-arm
+          - runner: blacksmith-staging-4vcpu-ubuntu-2204-arm
             platform: linux/amd64
     steps:
       - name: Checkout the repo
@@ -361,3 +368,4 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          nofallback: true
