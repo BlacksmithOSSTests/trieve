@@ -7,10 +7,6 @@ concurrency:
 on:
   workflow_dispatch:
   push:
-    branches:
-      - 'main'
-    paths:
-    - 'server/**'
 
 jobs:
   build_server:
@@ -18,12 +14,12 @@ jobs:
     runs-on: ${{ matrix.runner }}
     strategy:
       matrix:
-        runner: [blacksmith-8vcpu-ubuntu-2204]
+        runner: [blacksmith-2vcpu-ubuntu-2204]
         platform: [linux/amd64]
         exclude:
-          - runner: blacksmith-8vcpu-ubuntu-2204
+          - runner: blacksmith-2vcpu-ubuntu-2204
             platform: linux/arm64
-          - runner: blacksmith-8vcpu-ubuntu-2204-arm
+          - runner: blacksmith-2vcpu-ubuntu-2204-arm
             platform: linux/amd64
     steps:
       - name: Checkout the repo
@@ -47,22 +43,21 @@ jobs:
         with:
           # list of Docker images to use as base name for tags
           images: |
-            trieve/server
+            blacksmithcihello/server
           tags: |
             type=raw,latest
             type=sha
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v5
+        uses: useblacksmith/build-push-action@v1-beta
         with:
           platforms: ${{ matrix.platform }}
-          cache-from: type=registry,ref=trieve/buildcache:server-${{matrix.runner}}
-          cache-to: type=registry,ref=trieve/buildcache:server-${{matrix.runner}},mode=max
           context: server/
           file: ./server/Dockerfile.server
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          nofallback: true
 
 
   ingest_worker:
@@ -70,12 +65,12 @@ jobs:
     runs-on: ${{ matrix.runner }}
     strategy:
       matrix:
-        runner: [blacksmith-8vcpu-ubuntu-2204]
+        runner: [blacksmith-2vcpu-ubuntu-2204]
         platform: [linux/amd64]
         exclude:
-          - runner: blacksmith-8vcpu-ubuntu-2204
+          - runner: blacksmith-2vcpu-ubuntu-2204
             platform: linux/arm64
-          - runner: blacksmith-8vcpu-ubuntu-2204-arm
+          - runner: blacksmith-2vcpu-ubuntu-2204-arm
             platform: linux/amd64
     steps:
       - name: Checkout the repo
@@ -96,34 +91,33 @@ jobs:
         with:
           # list of Docker images to use as base name for tags
           images: |
-            trieve/ingest
+            blacksmithcihello/ingest
           tags: |
             type=raw,latest
             type=sha
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v5
+        uses: useblacksmith/build-push-action@v1-beta
         with:
           platforms: ${{ matrix.platform }}
-          cache-from: type=registry,ref=trieve/buildcache:ingest-${{matrix.runner}}
-          cache-to: type=registry,ref=trieve/buildcache:ingest-${{matrix.runner}},mode=max
           context: server/
           file: ./server/Dockerfile.ingestion-worker
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          nofallback: true
 
   delete_worker:
     name: Push Delete worker
     runs-on: ${{ matrix.runner }}
     strategy:
       matrix:
-        runner: [blacksmith-8vcpu-ubuntu-2204]
+        runner: [blacksmith-2vcpu-ubuntu-2204]
         platform: [linux/amd64]
         exclude:
-          - runner: blacksmith-8vcpu-ubuntu-2204
+          - runner: blacksmith-2vcpu-ubuntu-2204
             platform: linux/arm64
-          - runner: blacksmith-8vcpu-ubuntu-2204-arm
+          - runner: blacksmith-2vcpu-ubuntu-2204-arm
             platform: linux/amd64
     steps:
       - name: Checkout the repo
@@ -144,22 +138,21 @@ jobs:
         with:
           # list of Docker images to use as base name for tags
           images: |
-            trieve/delete_worker
+            blacksmithcihello/delete_worker
           tags: |
             type=raw,latest
             type=sha
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v5
+        uses: useblacksmith/build-push-action@v1-beta
         with:
           platforms: ${{ matrix.platform }}
-          cache-from: type=registry,ref=trieve/buildcache:delete_worker-${{matrix.runner}}
-          cache-to: type=registry,ref=trieve/buildcache:delete_worker-${{matrix.runner}},mode=max
           context: server/
           file: ./server/Dockerfile.delete-worker
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          nofallback: true
 
 
   file_worker:
@@ -167,12 +160,12 @@ jobs:
     runs-on: ${{ matrix.runner }}
     strategy:
       matrix:
-        runner: [blacksmith-8vcpu-ubuntu-2204]
+        runner: [blacksmith-2vcpu-ubuntu-2204]
         platform: [linux/amd64]
         exclude:
-          - runner: blacksmith-8vcpu-ubuntu-2204
+          - runner: blacksmith-2vcpu-ubuntu-2204
             platform: linux/arm64
-          - runner: blacksmith-8vcpu-ubuntu-2204-arm
+          - runner: blacksmith-2vcpu-ubuntu-2204-arm
             platform: linux/amd64
     steps:
       - name: Checkout the repo
@@ -193,34 +186,33 @@ jobs:
         with:
           # list of Docker images to use as base name for tags
           images: |
-            trieve/file_worker
+            blacksmithcihello/file_worker
           tags: |
             type=raw,latest
             type=sha
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v5
+        uses: useblacksmith/build-push-action@v1-beta
         with:
           platforms: ${{ matrix.platform }}
-          cache-from: type=registry,ref=trieve/buildcache:file_worker-${{matrix.runner}}
-          cache-to: type=registry,ref=trieve/buildcache:file_worker-${{matrix.runner}},mode=max
           context: server/
           file: ./server/Dockerfile.file-worker
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          nofallback: true
 
   group_worker:
     name: Push Group worker
     runs-on: ${{ matrix.runner }}
     strategy:
       matrix:
-        runner: [blacksmith-8vcpu-ubuntu-2204]
+        runner: [blacksmith-2vcpu-ubuntu-2204]
         platform: [linux/amd64]
         exclude:
-          - runner: blacksmith-8vcpu-ubuntu-2204
+          - runner: blacksmith-2vcpu-ubuntu-2204
             platform: linux/arm64
-          - runner: blacksmith-8vcpu-ubuntu-2204-arm
+          - runner: blacksmith-2vcpu-ubuntu-2204-arm
             platform: linux/amd64
     steps:
       - name: Checkout the repo
@@ -241,34 +233,33 @@ jobs:
         with:
           # list of Docker images to use as base name for tags
           images: |
-            trieve/group_worker
+            blacksmithcihello/group_worker
           tags: |
             type=raw,latest
             type=sha
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v5
+        uses: useblacksmith/build-push-action@v1-beta
         with:
           platforms: ${{ matrix.platform }}
-          cache-from: type=registry,ref=trieve/buildcache:group_worker-${{matrix.runner}}
-          cache-to: type=registry,ref=trieve/buildcache:group_worker-${{matrix.runner}},mode=max
           context: server/
           file: ./server/Dockerfile.group-worker
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          nofallback: true
 
   clone_qdrant:
     name: Push Clone Qdrant script
     runs-on: ${{ matrix.runner }}
     strategy:
       matrix:
-        runner: [blacksmith-8vcpu-ubuntu-2204]
+        runner: [blacksmith-2vcpu-ubuntu-2204]
         platform: [linux/amd64]
         exclude:
-          - runner: blacksmith-8vcpu-ubuntu-2204
+          - runner: blacksmith-2vcpu-ubuntu-2204
             platform: linux/arm64
-          - runner: blacksmith-8vcpu-ubuntu-2204-arm
+          - runner: blacksmith-2vcpu-ubuntu-2204-arm
             platform: linux/amd64
     steps:
       - name: Checkout the repo
@@ -289,34 +280,33 @@ jobs:
         with:
           # list of Docker images to use as base name for tags
           images: |
-            trieve/clone_qdrant
+            blacksmithcihello/clone_qdrant
           tags: |
             type=raw,latest
             type=sha
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v5
+        uses: useblacksmith/build-push-action@v1-beta
         with:
           platforms: ${{ matrix.platform }}
-          cache-from: type=registry,ref=trieve/buildcache:clone_qdrant-${{matrix.runner}}
-          cache-to: type=registry,ref=trieve/buildcache:clone_qdrant-${{matrix.runner}},mode=max
           context: server/
           file: ./server/Dockerfile.clone-qdrant
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          nofallback: true
 
   sync_qdrant:
     name: Push Sync Qdrant script
     runs-on: ${{ matrix.runner }}
     strategy:
       matrix:
-        runner: [blacksmith-8vcpu-ubuntu-2204]
+        runner: [blacksmith-2vcpu-ubuntu-2204]
         platform: [linux/amd64]
         exclude:
-          - runner: blacksmith-8vcpu-ubuntu-2204
+          - runner: blacksmith-2vcpu-ubuntu-2204
             platform: linux/arm64
-          - runner: blacksmith-8vcpu-ubuntu-2204-arm
+          - runner: blacksmith-2vcpu-ubuntu-2204-arm
             platform: linux/amd64
     steps:
       - name: Checkout the repo
@@ -337,34 +327,33 @@ jobs:
         with:
           # list of Docker images to use as base name for tags
           images: |
-            trieve/sync_qdrant
+            blacksmithcihello/sync_qdrant
           tags: |
             type=raw,latest
             type=sha
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v5
+        uses: useblacksmith/build-push-action@v1-beta
         with:
           platforms: ${{ matrix.platform }}
-          cache-from: type=registry,ref=trieve/buildcache:sync_qdrant-${{matrix.runner}}
-          cache-to: type=registry,ref=trieve/buildcache:sync_qdrant-${{matrix.runner}},mode=max
           context: server/
           file: ./server/Dockerfile.sync-qdrant
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          nofallback: true
 
   queue_bm25:
     name: Push Queue BM25 Script
     runs-on: ${{ matrix.runner }}
     strategy:
       matrix:
-        runner: [blacksmith-8vcpu-ubuntu-2204]
+        runner: [blacksmith-2vcpu-ubuntu-2204]
         platform: [linux/amd64]
         exclude:
-          - runner: blacksmith-8vcpu-ubuntu-2204
+          - runner: blacksmith-2vcpu-ubuntu-2204
             platform: linux/arm64
-          - runner: blacksmith-8vcpu-ubuntu-2204-arm
+          - runner: blacksmith-2vcpu-ubuntu-2204-arm
             platform: linux/amd64
     steps:
       - name: Checkout the repo
@@ -385,34 +374,33 @@ jobs:
         with:
           # list of Docker images to use as base name for tags
           images: |
-            trieve/queue-bm25-migration
+            blacksmithcihello/queue-bm25-migration
           tags: |
             type=raw,latest
             type=sha
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v5
+        uses: useblacksmith/build-push-action@v1-beta
         with:
           platforms: ${{ matrix.platform }}
-          cache-from: type=registry,ref=trieve/buildcache:bm25-queue-${{matrix.runner}}
-          cache-to: type=registry,ref=trieve/buildcache:bm25-queue-${{matrix.runner}},mode=max
           context: server/
           file: ./server/Dockerfile.queue-bm25
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          nofallback: true
 
   reindex-worker:
     name: Push Reindex Worker
     runs-on: ${{ matrix.runner }}
     strategy:
       matrix:
-        runner: [blacksmith-8vcpu-ubuntu-2204]
+        runner: [blacksmith-2vcpu-ubuntu-2204]
         platform: [linux/amd64]
         exclude:
-          - runner: blacksmith-8vcpu-ubuntu-2204
+          - runner: blacksmith-2vcpu-ubuntu-2204
             platform: linux/arm64
-          - runner: blacksmith-8vcpu-ubuntu-2204-arm
+          - runner: blacksmith-2vcpu-ubuntu-2204-arm
             platform: linux/amd64
     steps:
       - name: Checkout the repo
@@ -433,34 +421,33 @@ jobs:
         with:
           # list of Docker images to use as base name for tags
           images: |
-            trieve/reindex-worker
+            blacksmithcihello/reindex-worker
           tags: |
             type=raw,latest
             type=sha
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v5
+        uses: useblacksmith/build-push-action@v1-beta
         with:
           platforms: ${{ matrix.platform }}
-          cache-from: type=registry,ref=trieve/buildcache:reindex-worker-${{matrix.runner}}
-          cache-to: type=registry,ref=trieve/buildcache:reindex-worker-${{matrix.runner}},mode=max
           context: server/
           file: ./server/Dockerfile.reindex-worker
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          nofallback: true
 
   word-id-cronjob:
     name: Push Word ID cronjob
     runs-on: ${{ matrix.runner }}
     strategy:
       matrix:
-        runner: [blacksmith-8vcpu-ubuntu-2204]
+        runner: [blacksmith-2vcpu-ubuntu-2204]
         platform: [linux/amd64]
         exclude:
-          - runner: blacksmith-8vcpu-ubuntu-2204
+          - runner: blacksmith-2vcpu-ubuntu-2204
             platform: linux/arm64
-          - runner: blacksmith-8vcpu-ubuntu-2204-arm
+          - runner: blacksmith-2vcpu-ubuntu-2204-arm
             platform: linux/amd64
     steps:
       - name: Checkout the repo
@@ -481,34 +468,33 @@ jobs:
         with:
           # list of Docker images to use as base name for tags
           images: |
-            trieve/word-id-cronjob
+            blacksmithcihello/word-id-cronjob
           tags: |
             type=raw,latest
             type=sha
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v5
+        uses: useblacksmith/build-push-action@v1-beta
         with:
           platforms: ${{ matrix.platform }}
-          cache-from: type=registry,ref=trieve/buildcache:word-id-cronjob-${{matrix.runner}}
-          cache-to: type=registry,ref=trieve/buildcache:word-id-cronjob-${{matrix.runner}},mode=max
           context: server/
           file: ./server/Dockerfile.word-id-cronjob
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          nofallback: true
 
   word-worker:
     name: Push Word Worker
     runs-on: ${{ matrix.runner }}
     strategy:
       matrix:
-        runner: [blacksmith-8vcpu-ubuntu-2204]
+        runner: [blacksmith-2vcpu-ubuntu-2204]
         platform: [linux/amd64]
         exclude:
-          - runner: blacksmith-8vcpu-ubuntu-2204
+          - runner: blacksmith-2vcpu-ubuntu-2204
             platform: linux/arm64
-          - runner: blacksmith-8vcpu-ubuntu-2204-arm
+          - runner: blacksmith-2vcpu-ubuntu-2204-arm
             platform: linux/amd64
     steps:
       - name: Checkout the repo
@@ -529,34 +515,33 @@ jobs:
         with:
           # list of Docker images to use as base name for tags
           images: |
-            trieve/word-worker
+            blacksmithcihello/word-worker
           tags: |
             type=raw,latest
             type=sha
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v5
+        uses: useblacksmith/build-push-action@v1-beta
         with:
           platforms: ${{ matrix.platform }}
-          cache-from: type=registry,ref=trieve/buildcache:word-worker-${{matrix.runner}}
-          cache-to: type=registry,ref=trieve/buildcache:word-worker-${{matrix.runner}},mode=max
           context: server/
           file: ./server/Dockerfile.word-worker
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          nofallback: true
 
   bktree-worker:
     name: Push BK-Tree Worker
     runs-on: ${{ matrix.runner }}
     strategy:
       matrix:
-        runner: [blacksmith-8vcpu-ubuntu-2204]
+        runner: [blacksmith-2vcpu-ubuntu-2204]
         platform: [linux/amd64]
         exclude:
-          - runner: blacksmith-8vcpu-ubuntu-2204
+          - runner: blacksmith-2vcpu-ubuntu-2204
             platform: linux/arm64
-          - runner: blacksmith-8vcpu-ubuntu-2204-arm
+          - runner: blacksmith-2vcpu-ubuntu-2204-arm
             platform: linux/amd64
     steps:
       - name: Checkout the repo
@@ -577,33 +562,32 @@ jobs:
         with:
           # list of Docker images to use as base name for tags
           images: |
-            trieve/bktree-worker
+            blacksmithcihello/bktree-worker
           tags: |
             type=raw,latest
             type=sha
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v5
+        uses: useblacksmith/build-push-action@v1-beta
         with:
           platforms: ${{ matrix.platform }}
-          cache-from: type=registry,ref=trieve/buildcache:bktree-worker-${{matrix.runner}}
-          cache-to: type=registry,ref=trieve/buildcache:bktree-worker-${{matrix.runner}},mode=max
           context: server/
           file: ./server/Dockerfile.bktree-worker
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          nofallback: true
   crawl-worker:
     name: Push Crawl Worker
     runs-on: ${{ matrix.runner }}
     strategy:
       matrix:
-        runner: [blacksmith-8vcpu-ubuntu-2204]
+        runner: [blacksmith-2vcpu-ubuntu-2204]
         platform: [linux/amd64]
         exclude:
-          - runner: blacksmith-8vcpu-ubuntu-2204
+          - runner: blacksmith-2vcpu-ubuntu-2204
             platform: linux/arm64
-          - runner: blacksmith-8vcpu-ubuntu-2204-arm
+          - runner: blacksmith-2vcpu-ubuntu-2204-arm
             platform: linux/amd64
     steps:
       - name: Checkout the repo
@@ -624,33 +608,32 @@ jobs:
         with:
           # list of Docker images to use as base name for tags
           images: |
-            trieve/crawl-worker
+            blacksmithcihello/crawl-worker
           tags: |
             type=raw,latest
             type=sha
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v5
+        uses: useblacksmith/build-push-action@v1-beta
         with:
           platforms: ${{ matrix.platform }}
-          cache-from: type=registry,ref=trieve/buildcache:crawl-worker-${{matrix.runner}}
-          cache-to: type=registry,ref=trieve/buildcache:crawl-worker-${{matrix.runner}},mode=max
           context: server/
           file: ./server/Dockerfile.crawl-worker
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          nofallback: true
   crawl-cron-job:
       name: Push Crawl Cron Job
       runs-on: ${{ matrix.runner }}
       strategy:
         matrix:
-          runner: [blacksmith-8vcpu-ubuntu-2204]
+          runner: [blacksmith-2vcpu-ubuntu-2204]
           platform: [linux/amd64]
           exclude:
-            - runner: blacksmith-8vcpu-ubuntu-2204
+            - runner: blacksmith-2vcpu-ubuntu-2204
               platform: linux/arm64
-            - runner: blacksmith-8vcpu-ubuntu-2204-arm
+            - runner: blacksmith-2vcpu-ubuntu-2204-arm
               platform: linux/amd64
       steps:
         - name: Checkout the repo
@@ -671,33 +654,32 @@ jobs:
           with:
             # list of Docker images to use as base name for tags
             images: |
-              trieve/crawl-cron-job
+              blacksmithcihello/crawl-cron-job
             tags: |
               type=raw,latest
               type=sha
 
         - name: Build and push Docker image
-          uses: docker/build-push-action@v5
+          uses: useblacksmith/build-push-action@v1-beta
           with:
             platforms: ${{ matrix.platform }}
-            cache-from: type=registry,ref=trieve/buildcache:crawl-cron-job-${{matrix.runner}}
-            cache-to: type=registry,ref=trieve/buildcache:crawl-cron-job-${{matrix.runner}},mode=max
             context: server/
             file: ./server/Dockerfile.crawl-cron-job
             push: true
             tags: ${{ steps.meta.outputs.tags }}
             labels: ${{ steps.meta.outputs.labels }}
+            nofallback: true
   dittofeed-sync-worker:
       name: Push Dittofeed Sync Worker
       runs-on: ${{ matrix.runner }}
       strategy:
         matrix:
-          runner: [blacksmith-8vcpu-ubuntu-2204]
+          runner: [blacksmith-2vcpu-ubuntu-2204]
           platform: [linux/amd64]
           exclude:
-            - runner: blacksmith-8vcpu-ubuntu-2204
+            - runner: blacksmith-2vcpu-ubuntu-2204
               platform: linux/arm64
-            - runner: blacksmith-8vcpu-ubuntu-2204-arm
+            - runner: blacksmith-2vcpu-ubuntu-2204-arm
               platform: linux/amd64
       steps:
         - name: Checkout the repo
@@ -718,19 +700,18 @@ jobs:
           with:
             # list of Docker images to use as base name for tags
             images: |
-              trieve/dittofeed-sync-worker
+              blacksmithcihello/dittofeed-sync-worker
             tags: |
               type=raw,latest
               type=sha
 
         - name: Build and push Docker image
-          uses: docker/build-push-action@v5
+          uses: useblacksmith/build-push-action@v1-beta
           with:
             platforms: ${{ matrix.platform }}
-            cache-from: type=registry,ref=trieve/buildcache:dittofeed-sync-worker-${{matrix.runner}}
-            cache-to: type=registry,ref=trieve/buildcache:dittofeed-sync-worker-${{matrix.runner}},mode=max
             context: server/
             file: ./server/Dockerfile.dittofeed-sync-worker
             push: true
             tags: ${{ steps.meta.outputs.tags }}
             labels: ${{ steps.meta.outputs.labels }}
+            nofallback: true
