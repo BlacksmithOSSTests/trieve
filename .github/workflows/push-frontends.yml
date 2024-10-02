@@ -7,21 +7,11 @@ concurrency:
 on:
   workflow_dispatch:
   push:
-    branches:
-      - "main"
-    paths:
-      - "frontends/dashboard/**"
-      - "frontends/search/**"
-      - "frontends/chat/**"
-      - "frontends/analytics-site/**"
-      - "frontends/shared/**"
-      - "frontends/config/**"
-      - "clients/ts-sdk/**"
 
 jobs:
   build_chat:
     name: Push Chat Image
-    runs-on: blacksmith-2vcpu-ubuntu-2204
+    runs-on: blacksmith-staging
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v4
@@ -44,26 +34,25 @@ jobs:
         with:
           # list of Docker images to use as base name for tags
           images: |
-            trieve/chat
+            blacksmithcihello/chat
           tags: |
             type=raw,latest
             type=sha
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v5
+        uses: useblacksmith/build-push-action@master
         with:
           # platforms: linux/amd64,linux/arm64
-          cache-from: type=registry,ref=trieve/buildcache:chat
-          cache-to: type=registry,ref=trieve/buildcache:chat,mode=max
           file: frontends/chat/Dockerfile
           context: .
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          nofallback: true
 
   build_search:
     name: Push Search Image
-    runs-on: blacksmith-2vcpu-ubuntu-2204
+    runs-on: blacksmith-staging
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v4
@@ -86,22 +75,21 @@ jobs:
         with:
           # list of Docker images to use as base name for tags
           images: |
-            trieve/search
+            blacksmithcihello/search
           tags: |
             type=raw,latest
             type=sha
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v5
+        uses: useblacksmith/build-push-action@master
         with:
           # platforms: linux/amd64,linux/arm64
-          cache-from: type=registry,ref=trieve/buildcache:search
-          cache-to: type=registry,ref=trieve/buildcache:search,mode=max
           file: frontends/search/Dockerfile
           context: .
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          nofallback: true
 
   build_dashboard:
     name: Push Dashboard Image
@@ -128,22 +116,21 @@ jobs:
         with:
           # list of Docker images to use as base name for tags
           images: |
-            trieve/dashboard
+            blacksmithcihello/dashboard
           tags: |
             type=raw,latest
             type=sha
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v5
+        uses: useblacksmith/build-push-action@v1-beta
         with:
           # platforms: linux/amd64,linux/arm64
-          cache-from: type=registry,ref=trieve/buildcache:dashboard
-          cache-to: type=registry,ref=trieve/buildcache:dashboard,mode=max
           file: frontends/dashboard/Dockerfile
           context: .
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          nofallback: true
 
   build_analytics_site:
     name: Push Analytics Image
@@ -170,13 +157,13 @@ jobs:
         with:
           # list of Docker images to use as base name for tags
           images: |
-            trieve/analytics-site
+            blacksmithcihello/analytics-site
           tags: |
             type=raw,latest
             type=sha
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v5
+        uses: useblacksmith/build-push-action@v1-beta
         with:
           # platforms: linux/amd64,linux/arm64
           file: frontends/analytics/Dockerfile
@@ -184,3 +171,4 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          nofallback: true
