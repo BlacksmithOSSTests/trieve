@@ -93,7 +93,7 @@ jobs:
 
   build_dashboard:
     name: Push Dashboard Image
-    runs-on: blacksmith-2vcpu-ubuntu-2204
+    runs-on: blacksmith-staging
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v4
@@ -134,7 +134,7 @@ jobs:
 
   build_analytics_site:
     name: Push Analytics Image
-    runs-on: blacksmith-2vcpu-ubuntu-2204
+    runs-on: blacksmith-staging
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v4
