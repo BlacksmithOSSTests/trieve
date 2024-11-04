@@ -11,7 +11,10 @@ on:
 jobs:
   build_chat:
     name: Push Chat Image
-    runs-on: blacksmith-staging
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      matrix:
+        runner: [blacksmith-staging, blacksmith-staging-16vcpu-ubuntu-2204]
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v4
@@ -49,10 +52,14 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           nofallback: true
+          no-cache: true
 
   build_search:
     name: Push Search Image
-    runs-on: blacksmith-staging
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      matrix:
+        runner: [blacksmith-staging, blacksmith-staging-16vcpu-ubuntu-2204]
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v4
@@ -90,10 +97,13 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           nofallback: true
-
+          no-cache: true
   build_dashboard:
     name: Push Dashboard Image
-    runs-on: blacksmith-staging
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      matrix:
+        runner: [blacksmith-staging, blacksmith-staging-16vcpu-ubuntu-2204]
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v4
@@ -131,10 +141,14 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           nofallback: true
+          no-cache: true
 
   build_analytics_site:
     name: Push Analytics Image
-    runs-on: blacksmith-staging
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      matrix:
+        runner: [blacksmith-staging, blacksmith-staging-16vcpu-ubuntu-2204]
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v4
@@ -172,3 +186,4 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           nofallback: true
+          no-cache: true
