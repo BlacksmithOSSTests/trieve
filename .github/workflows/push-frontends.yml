@@ -122,7 +122,7 @@ jobs:
             type=sha
 
       - name: Build and push Docker image
-        uses: useblacksmith/build-push-action@v1-beta
+        uses: useblacksmith/build-push-action@master
         with:
           # platforms: linux/amd64,linux/arm64
           file: frontends/dashboard/Dockerfile
@@ -163,7 +163,7 @@ jobs:
             type=sha
 
       - name: Build and push Docker image
-        uses: useblacksmith/build-push-action@v1-beta
+        uses: useblacksmith/build-push-action@master
         with:
           # platforms: linux/amd64,linux/arm64
           file: frontends/analytics/Dockerfile
