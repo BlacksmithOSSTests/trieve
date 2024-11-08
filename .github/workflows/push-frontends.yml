@@ -11,7 +11,7 @@ on:
 jobs:
   build_chat:
     name: Push Chat Image
-    runs-on: blacksmith-staging
+    runs-on: blacksmith
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v4
@@ -40,7 +40,7 @@ jobs:
             type=sha
 
       - name: Build and push Docker image
-        uses: useblacksmith/build-push-action@master
+        uses: useblacksmith/build-push-action@v1.0.0-beta
         with:
           # platforms: linux/amd64,linux/arm64
           file: frontends/chat/Dockerfile
@@ -52,7 +52,7 @@ jobs:
 
   build_search:
     name: Push Search Image
-    runs-on: blacksmith-staging
+    runs-on: blacksmith
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v4
@@ -81,7 +81,7 @@ jobs:
             type=sha
 
       - name: Build and push Docker image
-        uses: useblacksmith/build-push-action@master
+        uses: useblacksmith/build-push-action@v1.0.0-beta
         with:
           # platforms: linux/amd64,linux/arm64
           file: frontends/search/Dockerfile
@@ -93,7 +93,7 @@ jobs:
 
   build_dashboard:
     name: Push Dashboard Image
-    runs-on: blacksmith-staging
+    runs-on: blacksmith
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v4
@@ -122,7 +122,7 @@ jobs:
             type=sha
 
       - name: Build and push Docker image
-        uses: useblacksmith/build-push-action@master
+        uses: useblacksmith/build-push-action@v1.0.0-beta
         with:
           # platforms: linux/amd64,linux/arm64
           file: frontends/dashboard/Dockerfile
@@ -134,7 +134,7 @@ jobs:
 
   build_analytics_site:
     name: Push Analytics Image
-    runs-on: blacksmith-staging
+    runs-on: blacksmith
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v4
@@ -163,7 +163,7 @@ jobs:
             type=sha
 
       - name: Build and push Docker image
-        uses: useblacksmith/build-push-action@master
+        uses: useblacksmith/build-push-action@v1.0.0-beta
         with:
           # platforms: linux/amd64,linux/arm64
           file: frontends/analytics/Dockerfile
