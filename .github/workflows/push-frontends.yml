@@ -40,7 +40,7 @@ jobs:
             type=sha
 
       - name: Build and push Docker image
-        uses: useblacksmith/build-push-action@v1.0.0-beta
+        uses: useblacksmith/build-push-action@builder-fixup
         with:
           # platforms: linux/amd64,linux/arm64
           file: frontends/chat/Dockerfile
@@ -49,6 +49,7 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           nofallback: true
+          builder: mybuilder
 
   build_search:
     name: Push Search Image
